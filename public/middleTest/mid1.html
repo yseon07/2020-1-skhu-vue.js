@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <style>
+            #app { padding: 30px; margin: 30px auto; max-width: 600px;
+                border: 1px solid #ccc; box-shadow: 3px 3px 3px #aaa; }
+            span { display: inline-block; margin: 5px; padding: 8px 15px;}
+            input, button { padding: 5px ; margin: 5px; }
+        </style>
+    </head>
+    <body>
+        <div id='app'>
+            
+            <input type="text" v-model="num" />
+            <button>++</button>
+            <button>--</button>
+            
+        </div>
+
+        <script>
+            new Vue({
+                el: '#app',
+                data: {
+                    num: 0
+                }
+            })
+        </script>
+    </body>
+</html>
