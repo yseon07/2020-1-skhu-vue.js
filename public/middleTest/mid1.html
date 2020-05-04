@@ -5,17 +5,15 @@
         <style>
             #app { padding: 30px; margin: 30px auto; max-width: 600px;
                 border: 1px solid #ccc; box-shadow: 3px 3px 3px #aaa; }
-            span { display: inline-block; margin: 5px; padding: 8px 15px;}
-            input, button { padding: 5px ; margin: 5px; }
+            input { padding: 5px ; margin: 5px; }
+            button { padding: 5px ; margin: 5px ; width: 50px ;}
         </style>
     </head>
     <body>
         <div id='app'>
-            
             <input type="text" v-model="num" />
-            <button>++</button>
-            <button>--</button>
-            
+            <button v-on:click="plus">++</button>
+            <button v-on:click="minus">--</button>
         </div>
 
         <script>
@@ -23,6 +21,14 @@
                 el: '#app',
                 data: {
                     num: 0
+                },
+                methods: {
+                    plus() {
+                        this.num += 1;
+                    },
+                    minus() {
+                        this.num -= 1;
+                    }
                 }
             })
         </script>
