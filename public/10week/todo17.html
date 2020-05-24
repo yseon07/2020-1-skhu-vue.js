@@ -1,0 +1,81 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="todo1.css">
+  <style> ul { list-style-type: none; } </style>
+</head>
+<body>
+  <div id="app">
+    <h1>할 일</h1>
+    <ul>
+      <li v-for="(todo, index) in todoList">
+        <input type="checkbox" v-model="checked[checkList.indexOf(index)]" />
+        {{ todo }}
+      </li>
+    </ul>
+    <input type="text" v-model.trim="todo" />
+    <button type="button" v-on:click="addTodo" v-bind:disabled="!todo">할일 추가</button>
+    <button type="button" v-on:click="deleteTodo" v-show="checkedCount > 0">삭제</button>
+  </div>
+
+  <script type="text/javascript">
+    var app = new Vue({
+      el: '#app',
+      data: {
+        todoList: [],
+        checked: [],
+        todo: "",
+        checkList: []
+      },
+      computed: {
+        checkedCount() {
+          var count = 0;
+          for(var i = 0 ; i < this.checked.length ; i++) {
+            if(this.checked[i])
+              count++;
+          }
+
+          return count;
+        }
+      },
+      methods: {
+        addTodo: function() {
+          axios.post('https://skhu-lys.firebaseio.com/todo1.json', JSON.stringify(this.todo))
+          .then(response => this.reload())
+          this.todo = "";
+        },
+        deleteTodo() { // 삭제
+          var keys = [];
+          for(var i = 0 ; i < this.checked.length ; i++) {
+              if(this.checked[i])
+                keys.push(this.checkList[i])
+          }
+          
+          for(var i = 0 ; i < keys.length ; i++) {
+            axios.delete('https://skhu-lys.firebaseio.com/todo1/' + keys[i] + '.json')
+            .then(response => this.reload());
+          }
+
+          this.checked = [];
+        },
+        reload() {
+          axios.get('https://skhu-lys.firebaseio.com/todo1.json')
+          .then(response => {
+            this.todoList = response.data
+
+            for( var key in this.todoList ) {
+                  this.checkList.push(key)
+            }
+          })
+        }
+      }
+    })
+
+    window.onload = function() {
+      app.reload();
+    }
+   </script>
+</body>
+</html>
